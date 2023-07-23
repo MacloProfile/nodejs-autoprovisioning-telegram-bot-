@@ -1,0 +1,45 @@
+# Exclude temporary files and folders created by different IDEs and editors
+
+# Visual Studio Code
+.vscode/
+settings.json
+launch.json
+
+# Node.js
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# macOS
+.DS_Store
+
+# Optionally, if using Webpack
+/dist/
+
+# Optionally, if using Babel
+/.babelrc
+
+# Optionally, if using TypeScript
+/tsconfig.json
+/tsconfig.tsbuildinfo
+
+# Optionally, if using ESLint
+/.eslintcache
+
+# Optionally, if using Prettier
+/.prettierrc
+/prettier.config.js
+
+# Optionally, if using Jest
+/coverage/
+/.nyc_output/
+
+# Optionally, if using Git LFS (Large File Storage)
+# Uncomment the next line if you want to use Git LFS for storing large files
+# .gitattributes
+
+# Optionally, if using Yarn PnP (Plug'n'Play)
+# Also, ensure you have a .pnp.js file added to .gitignore
+
+# Optionally, if using Husky
+/.husky/
