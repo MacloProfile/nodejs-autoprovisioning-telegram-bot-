@@ -1,37 +1,13 @@
 const TelegramBot = require('node-telegram-bot-api');
-const askBot = require('./bot/askBot');
+const commandHandlers = require('./bot/simpleCommands');
+const botLogic = require('./bot/askBot');
 
-class TelegramBotStart {
+class TelegramBotWrapper {
   constructor(token) {
     this.token = token;
     this.bot = new TelegramBot(this.token, { polling: true });
 
     this.bot.on('message', this.handleMessage.bind(this));
-  }
-
-  // Function to handle the /help command
-  handleHelpCommand(msg) {
-    const chatId = msg.chat.id;
-    this.bot.sendMessage(chatId, 'This is a bot written in JavaScript.');
-  }
-
-  // Function to handle the /support command
-  handleSupportCommand(msg) {
-    const chatId = msg.chat.id;
-    this.bot.sendMessage(chatId, 'Support');
-  }
-
-  // Function to handle the /profile command
-  handleProfileCommand(msg) {
-    const chatId = msg.chat.id;
-    const firstName = msg.from.first_name;
-    const lastName = msg.from.last_name || 'N/A';
-    const username = msg.from.username || 'N/A';
-    const userId = msg.from.id;
-
-    const profileInfo = `First Name: ${firstName}\nLast Name: ${lastName}\nUsername: ${username}\nUser ID: ${userId}`;
-
-    this.bot.sendMessage(chatId, profileInfo);
   }
 
   // Function to handle the /start command to show the menu
@@ -55,7 +31,7 @@ class TelegramBotStart {
   // Function to handle other messages
   handleOtherMessages(msg) {
     const chatId = msg.chat.id;
-    this.bot.sendMessage(chatId, 'I don\'t know this command. Type /start to see the list of available commands.');
+    this.bot.sendMessage(chatId, 'I don\'t know this command. Type 📖 Info to see the list of available commands.');
   }
 
   // Function to handle incoming messages
@@ -68,19 +44,19 @@ class TelegramBotStart {
         break;
 
       case '📖 Info':
-        this.handleHelpCommand(msg);
+        commandHandlers.handleHelpCommand(this.bot, msg.chat.id);
         break;
 
       case '❤️ Help':
-        this.handleSupportCommand(msg);
+        commandHandlers.handleSupportCommand(this.bot, msg.chat.id);
         break;
 
       case '👨🏼‍💻 Profile':
-        this.handleProfileCommand(msg);
+        commandHandlers.handleProfileCommand(this.bot, msg.chat.id, msg);
         break;
-      
+
       case '🏖 ask':
-        askBot.askMessage(this.bot, msg.chat.id);
+        botLogic.askMessage(this.bot, msg.chat.id);
         break;
 
       default:
@@ -90,4 +66,4 @@ class TelegramBotStart {
   }
 }
 
-module.exports = TelegramBotStart;
+module.exports = TelegramBotWrapper;
